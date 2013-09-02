@@ -1,14 +1,17 @@
 package main
 
 import (
-	"github.com/astaxie/beego"
-	//"websystem/api"
 	"SmartCMS/controllers/admin"
 	"SmartCMS/utils"
+	"github.com/astaxie/beego"
 )
 
 func main() {
-	beego.Router("/admin", &admin.UserControl{}, "*:ListUsers")
+	//main layout
+	beego.Router("/", &admin.IndexControl{}, "get:Index")
+	//users
+	beego.Router("/admin/usr/list", &admin.UserControl{}, "*:ListUsers")
+	beego.Router("/admin/usr/add", &admin.UserControl{}, "*:CreateUsr")
 
 	//temeplate fucation
 	beego.AddFuncMap("date2string", utils.Format2string)
