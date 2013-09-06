@@ -18,5 +18,6 @@ func main() {
 	beego.SessionOn = true
 	beego.AutoRender = false
 	beego.SetStaticPath("/upload", "upload")
+	beego.SetStaticPath("/img", "img")
 	beego.Run()
 }

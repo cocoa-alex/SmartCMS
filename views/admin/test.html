@@ -10,8 +10,8 @@
     <title>SmartCMS</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../static/css/bootstrap.css" rel="stylesheet">
-    <link href="../../static/css/theme.base.css" rel="stylesheet">
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/theme.base.css" rel="stylesheet">
   </head>
 
   <body>
@@ -56,7 +56,7 @@
             <a href="/" class="list-group-item active">
               首页
             </a>
-            <a href="/admin/usr/list" class="list-group-item">文章管理模块</a>
+            <a href="#" class="list-group-item">文章管理模块</a>
             <a href="#" class="list-group-item">类别管理模块</a>
             <a href="#" class="list-group-item">广告管理模块</a>
             <a href="#" class="list-group-item">留言管理模块</a>
@@ -74,7 +74,12 @@
       </div>
       <div class="col-md-9" role="main">
       <!--Layout-->
-      {{ .LayoutContent}}
+
+      <div>
+        <h2>Welcome to SmartCMS</h2>
+        <p>SmartCMS is a simple and faster CMS system.</p>
+      </div>    
+
       <!--Layout-->
       </div> 
     <!--End-->

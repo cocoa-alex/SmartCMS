@@ -1,10 +1,14 @@
 package utils
 
 import (
+	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
 	"crypto/hmac"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"time"
 )
@@ -38,4 +42,69 @@ func Validate_password(hashed string, input_password string) bool {
 		return false
 	}
 	return false
+}
+
+func OutputPasswordString(str string) string {
+	key := []byte("sfe023f_9fd&fwfl")
+	result, err := AesEncrypt([]byte(str), key)
+	if err != nil {
+		panic(err)
+	}
+	return base64.StdEncoding.EncodeToString(result)
+}
+func AesEncrypt(origData, key []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	blockSize := block.BlockSize()
+	origData = PKCS5Padding(origData, blockSize)
+
+	blockMode := cipher.NewCBCEncrypter(block, key[:blockSize])
+	cryted := make([]byte, len(origData))
+
+	blockMode.CryptBlocks(cryted, origData)
+
+	return cryted, nil
+}
+
+func AesDecrypt(cryted, key []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+
+	blockSize := block.BlockSize()
+	blockMode := cipher.NewCBCDecrypter(block, key[:blockSize])
+	origData := make([]byte, len(cryted))
+
+	blockMode.CryptBlocks(origData, cryted)
+	origData = PKCS5UnPadding(origData)
+
+	return origData, nil
+}
+
+func ZeroPadding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{0}, padding)
+
+	return append(ciphertext, padtext...)
+}
+
+func ZeroUnPadding(origData []byte) []byte {
+	length := len(origData)
+	unpadding := int(origData[length-1])
+	return origData[:(length - unpadding)]
+}
+
+func PKCS5Padding(ciphertext []byte, blockSize int) []byte {
+	padding := blockSize - len(ciphertext)%blockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(ciphertext, padtext...)
+}
+
+func PKCS5UnPadding(origData []byte) []byte {
+	length := len(origData)
+	unpadding := int(origData[length-1])
+	return origData[:(length - unpadding)]
 }

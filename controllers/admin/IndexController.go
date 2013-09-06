@@ -10,6 +10,6 @@ type IndexControl struct {
 
 func (u *IndexControl) Index() {
 	u.Layout = "admin/layout.html"
-	u.TplNames = "admin/user.tpl"
+	u.TplNames = "admin/index.tpl"
 	u.Render()
 }
